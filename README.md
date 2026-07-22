@@ -2,8 +2,6 @@
 
 RecruitOps AI is a fullstack AI recruiter workflow platform built as an optimized, original version of common AI hiring co-pilot demos. It focuses on production engineering signals: maintainable React/TypeScript UI, Node.js REST APIs, PostgreSQL-ready data modeling, Prisma schema design, JWT authentication shape, deterministic AI scoring fallback, CI, Docker, and clear architecture.
 
-This project is intentionally not a clone of RecruitAI or Zara. It uses the same real-world recruiting problem space, but with a different product model, data schema, UI system, and implementation structure.
-
 ## Tech Stack
 
 - React + TypeScript + Vite
