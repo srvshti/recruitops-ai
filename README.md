@@ -74,18 +74,6 @@ cp .env.example .env
 npm run dev
 ```
 
-Web app:
-
-```text
-http://localhost:5173
-```
-
-API:
-
-```text
-http://localhost:4000
-```
-
 Demo login:
 
 ```text
@@ -111,28 +99,3 @@ POST   /api/candidates/applications/:applicationId/score
 GET    /health
 ```
 
-## Why This Is Better Than A Basic RecruitAI Clone
-
-- Uses a recruiter operations dashboard instead of a marketing-first demo.
-- Adds a real relational schema instead of only frontend state.
-- Separates job, candidate, application, score, pipeline, and audit concepts.
-- Makes AI recommendations explainable with strengths, risks, missing skills, and provider metadata.
-- Keeps the default AI path deterministic so the app works without private API keys.
-- Includes CI, Docker, validation, auth boundaries, and typed service logic.
-
-## Resume Bullets
-
-```text
-• Built RecruitOps AI, a fullstack AI recruiter workflow platform using React, TypeScript, Node.js, and Express to manage jobs, candidates, match scores, and hiring pipeline stages.
-• Designed REST APIs and PostgreSQL/Prisma relational data models across 7 core entities, supporting candidate search, source/stage filtering, AI scoring, recruiter review states, pipeline events, and audit logs.
-• Implemented an explainable AI matching workflow that compares parsed resume skills against job requirements, generates fit scores, strengths, risks, and missing-skill summaries, and keeps recommendations human-reviewable.
-```
-
-## Interview Talking Points
-
-- Why candidate, application, and match result are separate entities.
-- How to evolve deterministic scoring into an LLM-backed matching service.
-- How to prevent AI recommendations from becoming automatic hiring decisions.
-- How to add RBAC for recruiters, hiring managers, and admins.
-- How to scale candidate search using PostgreSQL indexes, embeddings, or vector search.
-- How to add background jobs for resume parsing and score refreshes.
