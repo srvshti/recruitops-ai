@@ -38,6 +38,9 @@ export function requireRole(...roles: string[]) {
 
 export function issueDemoToken() {
   const user = users[0];
+  if (!user) {
+    throw new ApiError(500, "Demo user seed data is not configured");
+  }
   return {
     user,
     accessToken: jwt.sign({ sub: user.id, email: user.email, role: user.role }, env.JWT_SECRET, {
