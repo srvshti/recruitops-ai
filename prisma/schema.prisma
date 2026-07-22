@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  RECRUITER
+  HIRING_MANAGER
+  VIEWER
+}
+
+enum CandidateStage {
+  APPLIED
+  SCREEN
+  IN_REVIEW
+  SHORTLISTED
+  INTERVIEW
+  OFFER
+  REJECTED
+}
+
+model User {
+  id           String          @id @default(uuid())
+  email        String          @unique
+  passwordHash String
+  name         String
+  role         UserRole        @default(RECRUITER)
+  createdAt    DateTime        @default(now())
+  jobs         Job[]
+  auditEvents  AuditEvent[]
+  stageEvents  PipelineEvent[]
+}
+
+model Job {
+  id            String        @id @default(uuid())
+  title         String
+  department    String
+  location      String
+  status        String        @default("OPEN")
+  description   String
+  requirements  String[]
+  niceToHave    String[]
+  createdById   String
+  createdBy     User          @relation(fields: [createdById], references: [id])
+  applications  Application[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Candidate {
+  id            String          @id @default(uuid())
+  name          String
+  email         String          @unique
+  phone         String?
+  location      String?
+  headline      String
+  resumeText    String
+  parsedSkills  String[]
+  yearsExp      Float
+  source        String
+  applications  Application[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Application {
+  id             String           @id @default(uuid())
+  jobId          String
+  candidateId    String
+  stage          CandidateStage   @default(APPLIED)
+  job            Job              @relation(fields: [jobId], references: [id])
+  candidate      Candidate        @relation(fields: [candidateId], references: [id])
+  matchResult    AiMatchResult?
+  pipelineEvents PipelineEvent[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@unique([jobId, candidateId])
+  @@index([jobId, stage])
+  @@index([candidateId])
+}
+
+model AiMatchResult {
+  id              String      @id @default(uuid())
+  applicationId   String      @unique
+  application     Application @relation(fields: [applicationId], references: [id])
+  score           Int
+  summary         String
+  strengths       String[]
+  risks           String[]
+  missingSkills   String[]
+  modelProvider   String
+  modelVersion    String
+  createdAt       DateTime    @default(now())
+}
+
+model PipelineEvent {
+  id            String           @id @default(uuid())
+  applicationId String
+  actorId       String
+  fromStage     CandidateStage?
+  toStage       CandidateStage
+  note          String?
+  application   Application      @relation(fields: [applicationId], references: [id])
+  actor         User             @relation(fields: [actorId], references: [id])
+  createdAt     DateTime         @default(now())
+
+  @@index([applicationId, createdAt])
+}
+
+model AuditEvent {
+  id           String   @id @default(uuid())
+  actorId      String?
+  action       String
+  resourceType String
+  resourceId   String?
+  metadata     Json
+  actor        User?    @relation(fields: [actorId], references: [id])
+  createdAt    DateTime @default(now())
+
+  @@index([resourceType, resourceId])
+  @@index([createdAt])
+}

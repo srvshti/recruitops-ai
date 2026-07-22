@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: recruitops
+          POSTGRES_USER: recruitops
+          POSTGRES_PASSWORD: recruitops_dev_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U recruitops -d recruitops"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://recruitops:recruitops_dev_password@localhost:5432/recruitops
+      JWT_SECRET: ci-test-secret-change-before-prod
+      AI_PROVIDER: deterministic
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run prisma:generate
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run build

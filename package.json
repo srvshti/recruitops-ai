@@ -1,0 +1,23 @@
+{
+  "name": "recruitops-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fullstack AI recruiter workflow platform built with React, TypeScript, Node.js, PostgreSQL, and Prisma.",
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace apps/api & npm run dev --workspace apps/web",
+    "build": "npm run build --workspace apps/api && npm run build --workspace apps/web",
+    "lint": "npm run lint --workspace apps/web && npm run lint --workspace apps/api",
+    "test": "npm run test --workspace apps/api",
+    "typecheck": "npm run typecheck --workspace apps/api && npm run typecheck --workspace apps/web",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0",
+    "typescript": "^5.6.3"
+  }
+}
