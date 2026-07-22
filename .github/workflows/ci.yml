@@ -28,12 +28,12 @@ jobs:
       JWT_SECRET: ci-test-secret-change-before-prod
       AI_PROVIDER: deterministic
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: "20"
-          cache: npm
-      - run: npm ci
+          node-version: "24"
+          package-manager-cache: false
+      - run: npm install
       - run: npm run prisma:generate
       - run: npm run typecheck
       - run: npm run test
