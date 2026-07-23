@@ -55,6 +55,36 @@ export interface MatchResult {
   createdAt: string;
 }
 
+export interface AgentToolCall {
+  id: string;
+  name: "parse_resume" | "extract_skills" | "score_job_fit" | "generate_recommendation" | "write_audit_event";
+  status: "SUCCEEDED" | "SKIPPED";
+  input: Record<string, unknown>;
+  output: Record<string, unknown>;
+  latencyMs: number;
+}
+
+export interface AgentRun {
+  id: string;
+  applicationId: string;
+  prompt: string;
+  recommendation: string;
+  confidence: number;
+  fitScore: number;
+  toolCalls: AgentToolCall[];
+  createdAt: string;
+}
+
+export interface AuditEvent {
+  id: string;
+  actorId: string;
+  action: string;
+  resourceType: string;
+  resourceId: string;
+  metadata: Record<string, unknown>;
+  createdAt: string;
+}
+
 export interface RecruiterUser {
   id: string;
   email: string;

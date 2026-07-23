@@ -58,7 +58,7 @@ export function CandidateTable({ candidates, selectedId, onSelect, onStageChange
         </button>
       ))}
       <div className="pagination">
-        <span>1-{candidates.length} of 34</span>
+        <span>1-{candidates.length} of 30</span>
         <span>Rows per page: <strong>25</strong></span>
         <button>‹</button>
         <button className="activePage">1</button>

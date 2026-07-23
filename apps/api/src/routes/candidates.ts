@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { z } from "zod";
-import { applications, candidates, jobs, matchResults } from "../config/seed.js";
+import { agentRuns, applications, auditEvents, candidates, jobs, matchResults, users } from "../config/seed.js";
 import { requireAuth, requireRole } from "../middleware/auth.js";
 import { ApiError } from "../middleware/errors.js";
-import { scoreCandidate } from "../services/scoring.js";
+import { runRecruiterAgent } from "../services/agentWorkflow.js";
 
 const createCandidateSchema = z.object({
   name: z.string().min(2).max(120),
@@ -94,12 +94,25 @@ candidatesRouter.post("/applications/:applicationId/score", requireRole("ADMIN",
     throw new ApiError(404, "Candidate or job not found");
   }
 
-  const result = scoreCandidate(candidate, job, application.id);
+  const result = runRecruiterAgent({
+    application,
+    candidate,
+    job,
+    actorId: req.user?.id ?? users[0]!.id
+  });
   const existingIndex = matchResults.findIndex((item) => item.applicationId === application.id);
   if (existingIndex >= 0) {
-    matchResults[existingIndex] = result;
+    matchResults[existingIndex] = result.match;
   } else {
-    matchResults.push(result);
+    matchResults.push(result.match);
   }
-  res.json({ data: result });
+  const agentRunIndex = agentRuns.findIndex((item) => item.applicationId === application.id);
+  if (agentRunIndex >= 0) {
+    agentRuns[agentRunIndex] = result.agentRun;
+  } else {
+    agentRuns.push(result.agentRun);
+  }
+  auditEvents.push(result.auditEvent);
+
+  res.json({ data: result.match, agentRun: result.agentRun });
 });

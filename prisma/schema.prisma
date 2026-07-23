@@ -76,6 +76,7 @@ model Application {
   job            Job              @relation(fields: [jobId], references: [id])
   candidate      Candidate        @relation(fields: [candidateId], references: [id])
   matchResult    AiMatchResult?
+  agentRuns      AgentRun[]
   pipelineEvents PipelineEvent[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
@@ -97,6 +98,34 @@ model AiMatchResult {
   modelProvider   String
   modelVersion    String
   createdAt       DateTime    @default(now())
+}
+
+model AgentRun {
+  id             String          @id @default(uuid())
+  applicationId  String
+  application    Application     @relation(fields: [applicationId], references: [id])
+  prompt         String
+  recommendation String
+  confidence     Int
+  fitScore       Int
+  toolCalls      AgentToolCall[]
+  createdAt      DateTime        @default(now())
+
+  @@index([applicationId, createdAt])
+}
+
+model AgentToolCall {
+  id          String   @id @default(uuid())
+  agentRunId  String
+  agentRun    AgentRun @relation(fields: [agentRunId], references: [id])
+  name        String
+  status      String
+  input       Json
+  output      Json
+  latencyMs   Int
+  createdAt   DateTime @default(now())
+
+  @@index([agentRunId])
 }
 
 model PipelineEvent {

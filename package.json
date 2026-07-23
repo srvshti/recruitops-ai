@@ -2,7 +2,7 @@
   "name": "recruitops-ai",
   "version": "0.1.0",
   "private": true,
-  "description": "Fullstack AI recruiter workflow platform built with React, TypeScript, Node.js, PostgreSQL, and Prisma.",
+  "description": "Fullstack AI recruiter agent platform built with React, TypeScript, Node.js, GraphQL, PostgreSQL, and Prisma.",
   "workspaces": [
     "apps/web",
     "apps/api"

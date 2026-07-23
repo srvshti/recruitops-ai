@@ -15,12 +15,16 @@
    - Default scoring is deterministic and explainable.
    - LLM providers can be added behind the scoring service without exposing API keys.
    - Recommendations produce reasons, risks, and missing skills rather than automatic decisions.
+   - Agent runs are modeled as auditable workflows with 5 tool-call steps.
+   - Structured prompts are generated from job requirements and parsed candidate signals.
+   - Every agent recommendation writes an audit event for recruiter review.
 
 4. Interview-aligned engineering
    - React and TypeScript frontend.
    - Node.js and Express backend.
-- PostgreSQL-ready Prisma schema.
-- Seeded in-memory demo path so reviewers can inspect workflows without database setup.
+   - GraphQL workflow endpoint with 7 query operations and 4 mutations.
+   - PostgreSQL-ready Prisma schema.
+   - Seeded in-memory demo path with 30 candidates and 6 jobs so reviewers can inspect workflows without database setup.
    - JWT authentication pattern.
    - Zod validation.
    - Docker Compose and GitHub Actions.

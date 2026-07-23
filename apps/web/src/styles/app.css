@@ -619,7 +619,8 @@ kbd {
 }
 
 .detailTop p,
-.matchCard p {
+.matchCard p,
+.matchCard small {
   margin: 4px 0 0;
   color: var(--muted);
   font-size: 13px;
@@ -738,6 +739,61 @@ kbd {
 
 .explainList .warning::before {
   background: var(--amber);
+}
+
+.agentPrompt {
+  margin: 12px 0 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-soft);
+  padding: 10px;
+  color: #334155;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.toolTrace {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.toolStep {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 8px 10px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 9px;
+  background: var(--surface-soft);
+}
+
+.toolStep span {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e6fffb;
+  color: var(--teal-dark);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.toolStep strong,
+.toolStep small {
+  grid-column: 2;
+}
+
+.toolStep strong {
+  font-size: 12px;
+}
+
+.toolStep small {
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .skillCloud {

@@ -23,6 +23,7 @@ export function CandidateDetail({ candidate, onShortlist, onReject }: { candidat
         <div>
           <strong>{candidate.match >= 80 ? "Strong match" : candidate.match >= 65 ? "Potential match" : "Needs review"}</strong>
           <p>{candidate.summary}</p>
+          <small>{candidate.confidence}% confidence · {candidate.recommendation}</small>
         </div>
         <div className="actionStack">
           <button className="primaryAction" onClick={onShortlist}>☆ Shortlist</button>
@@ -38,13 +39,30 @@ export function CandidateDetail({ candidate, onShortlist, onReject }: { candidat
 
       <section className="detailSection">
         <div className="sectionHeader">
-          <h3>AI match explanation</h3>
-          <button>View full analysis</button>
+          <h3>Agent reasoning</h3>
+          <button>GraphQL trace</button>
         </div>
+        <p className="agentPrompt">{candidate.prompt}</p>
         <ul className="explainList">
           {candidate.strengths.map((item) => <li className="positive" key={item}>{item}</li>)}
           {candidate.risks.map((item) => <li className="warning" key={item}>{item}</li>)}
         </ul>
+      </section>
+
+      <section className="detailSection">
+        <div className="sectionHeader">
+          <h3>Tool calls</h3>
+          <span>{candidate.agentSteps.length} steps</span>
+        </div>
+        <div className="toolTrace">
+          {candidate.agentSteps.map((step, index) => (
+            <div className="toolStep" key={step.name}>
+              <span>{index + 1}</span>
+              <strong>{step.name}</strong>
+              <small>{step.status} · {step.latencyMs} ms · {step.output}</small>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="detailSection">

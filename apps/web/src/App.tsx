@@ -7,7 +7,7 @@ import { Sidebar } from "./components/Sidebar";
 import { candidates as initialCandidates, type CandidateRow, type Stage } from "./data/sample";
 
 const stageCounts = (rows: CandidateRow[]) => ({
-  Applicants: 34,
+  Applicants: rows.length,
   "In review": rows.filter((row) => row.stage === "In review").length,
   Shortlisted: rows.filter((row) => row.stage === "Shortlisted").length,
   Interview: rows.filter((row) => row.stage === "Interview").length,
@@ -46,7 +46,7 @@ export function App() {
       <main className="workspace">
         <header className="topbar">
           <div className="jobTitle">
-            <h1>Senior Frontend Engineer</h1>
+            <h1>AI Builder Engineer</h1>
             <span className="statusDot" />
             <span>Open</span>
           </div>
@@ -68,7 +68,7 @@ export function App() {
         </header>
 
         <div className="tabs mainTabs">
-          {["Candidates", "Pipeline", "Job details", "Team", "Activity"].map((tab, index) => (
+          {["Candidates", "Agent runs", "GraphQL API", "Pipeline", "Activity"].map((tab, index) => (
             <button className={index === 0 ? "tabActive" : ""} key={tab}>{tab}</button>
           ))}
         </div>
